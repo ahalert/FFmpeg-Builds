@@ -68,7 +68,10 @@ cat <<EOF >"$BUILD_SCRIPT"
     cd ffmpeg
     git update-index --chmod=+x ./configure
     chmod +x ./configure
-    find ./ -name "*.log" -type f | xargs chmod +x {};
+    for shfile in $(find ./ -name "*.log" -type f)
+    do 
+    chmod +x ${shfile}
+    done
     ./configure --prefix=/ffbuild/prefix --pkg-config-flags="--static" \$FFBUILD_TARGET_FLAGS $FF_CONFIGURE \
         --extra-cflags='$FF_CFLAGS' --extra-cxxflags='$FF_CXXFLAGS' \
         --extra-ldflags='$FF_LDFLAGS' --extra-ldexeflags='$FF_LDEXEFLAGS' --extra-libs='$FF_LIBS' \
