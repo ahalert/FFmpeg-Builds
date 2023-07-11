@@ -68,7 +68,7 @@ cat <<EOF >"$BUILD_SCRIPT"
     cd ffmpeg
     git update-index --chmod=+x ./configure
     chmod +x ./configure
-    find ./ -name "*.sh" -type f | xagrs chmod +x {}
+    find ./ -name "*.sh" -type f | xargs chmod +x {}
     #for shfile in $(find ./ -name "*.sh" -type f)
     #do 
     #chmod +x ${shfile}
