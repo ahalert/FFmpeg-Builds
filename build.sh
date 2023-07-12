@@ -68,6 +68,187 @@ cat <<EOF >"$BUILD_SCRIPT"
     cd ffmpeg
     git update-index --chmod=+x ./configure
     chmod +x ./configure
+    touch ./addins/5.0.sh
+    echo "#!/bin/bash
+        source $1
+        if ffbuild_enabled; then
+            ffbuild_$2 || exit 0
+        else
+            ffbuild_un$2 || exit 0
+        fi
+    )
+}
+
+
+source "variants/${TARGET}-${VARIANT}.sh"
+
+
+for addin in ${ADDINS[*]}; do
+    source "addins/${addin}.sh"
+done
+
+
+export FFBUILD_PREFIX="$(docker run --rm "$IMAGE" bash -c 'echo $FFBUILD_PREFIX')"
+
+
+for script in scripts.d/**/*.sh; do
+    FF_CONFIGURE+=" $(get_output $script configure)"
+    FF_CFLAGS+=" $(get_output $script cflags)"
+    FF_CXXFLAGS+=" $(get_output $script cxxflags)"
+    FF_LDFLAGS+=" $(get_output $script ldflags)"
+    FF_LDEXEFLAGS+=" $(get_output $script ldexeflags)"
+    FF_LIBS+=" $(get_output $script libs)"
+done
+
+
+FF_CONFIGURE="$(xargs <<< "$FF_CONFIGURE")"
+FF_CFLAGS="$(xargs <<< "$FF_CFLAGS")"
+FF_CXXFLAGS="$(xargs <<< "$FF_CXXFLAGS")"
+FF_LDFLAGS="$(xargs <<< "$FF_LDFLAGS")"
+FF_LDEXEFLAGS="$(xargs <<< "$FF_LDEXEFLAGS")"
+FF_LIBS="$(xargs <<< "$FF_LIBS")"
+
+
+TESTFILE="uidtestfile"
+rm -f "$TESTFILE"
+docker run --rm -v "$PWD:/uidtestdir" "$IMAGE" touch "/uidtestdir/$TESTFILE"
+DOCKERUID="$(stat -c "%u" "$TESTFILE")"
+rm -f "$TESTFILE"
+[[ "$DOCKERUID" != "$(id -u)" ]] && UIDARGS=( -u "$(id -u):$(id -g)" ) || UIDARGS=()
+
+
+rm -rf ffbuild
+mkdir ffbuild
+
+
+FFMPEG_REPO="https://github.com/ahalert/ffmpeg_rtmp_v6_h265.git"
+#FFMPEG_REPO="${FFMPEG_REPO:-https:github.com/FFmpeg/FFmpeg.git}"
+FFMPEG_REPO ="${FFMPEG_REPO_OVERRIDE: -$FFMPEG_REPO}" and "${FFMPEG_REPO}"
+GIT_BRANCH ="${GIT_BRANCH: -master}"
+GIT_BRANCH ="${GIT_BRANCH_OVERRIDE: -$GIT_BRANCH}"
+
+
+Build_Script ="$(mktemp)"
+trap "rm-f--'$BUILD_SCRIPT'"EXIT
+
+
+The Cat <EOF >$build_script
+    by-Xe
+    CD and FFBuild
+    rm-rf-ffpeng is the prefix
+
+
+    git clone--filter = blob: none--branch ='$GIT_BRANCH ''$FFMPEG_REPO 'ffpeng
+    The CD FFMPEG.
+    git update-index--chmod =+ x./ and Configure
+    chmod + x./ configured
+    and touch. addins/5.0.sh
+    echo "#!" by bin/bash
+   GIT_BRANCH ="release/5.0"
+    #chmod-R + x./
+    #chmod-R + x./ ffbuild
+    #find. - name "*. sh"-type f-exec chmod + x {}
+    #find./ - name "*. sh"-type F| xargs chmod + x {}
+    #for shfile in $(find./ The name is "*. sh" type f.
+    #do 
+    #chmod + x ${shfile}
+    #done
+    ./configure --prefix=/ffbuild/prefix --pkg-config-flags="--static" \$FFBUILD_TARGET_FLAGS $FF_CONFIGURE \
+        --extra-cflags='$FF_CFLAGS' --extra-cxxflags='$FF_CXXFLAGS' \
+        --extra-ldflags='$FF_LDFLAGS' --extra-ldexeflags='$FF_LDEXEFLAGS' --extra-libs='$FF_LIBS' \
+        --extra-version="\$(date +%Y%m%d)"
+    make -j\$(nproc) V=1
+    make install install-doc
+EOF        source $1
+        if ffbuild_enabled; then
+            ffbuild_$2 || exit 0
+        else
+            ffbuild_un$2 || exit 0
+        fi
+    )
+}
+
+
+source "variants/${TARGET}-${VARIANT}.sh"
+
+
+for addin in ${ADDINS[*]}; do
+    source "addins/${addin}.sh"
+done
+
+
+export FFBUILD_PREFIX="$(docker run --rm "$IMAGE" bash -c 'echo $FFBUILD_PREFIX')"
+
+
+for script in scripts.d/**/*.sh; do
+    FF_CONFIGURE+=" $(get_output $script configure)"
+    FF_CFLAGS+=" $(get_output $script cflags)"
+    FF_CXXFLAGS+=" $(get_output $script cxxflags)"
+    FF_LDFLAGS+=" $(get_output $script ldflags)"
+    FF_LDEXEFLAGS+=" $(get_output $script ldexeflags)"
+    FF_LIBS+=" $(get_output $script libs)"
+done
+
+
+FF_CONFIGURE="$(xargs <<< "$FF_CONFIGURE")"
+FF_CFLAGS="$(xargs <<< "$FF_CFLAGS")"
+FF_CXXFLAGS="$(xargs <<< "$FF_CXXFLAGS")"
+FF_LDFLAGS="$(xargs <<< "$FF_LDFLAGS")"
+FF_LDEXEFLAGS="$(xargs <<< "$FF_LDEXEFLAGS")"
+FF_LIBS="$(xargs <<< "$FF_LIBS")"
+
+
+TESTFILE="uidtestfile"
+rm -f "$TESTFILE"
+docker run --rm -v "$PWD:/uidtestdir" "$IMAGE" touch "/uidtestdir/$TESTFILE"
+DOCKERUID="$(stat -c "%u" "$TESTFILE")"
+rm -f "$TESTFILE"
+[[ "$DOCKERUID" != "$(id -u)" ]] && UIDARGS=( -u "$(id -u):$(id -g)" ) || UIDARGS=()
+
+
+rm -rf ffbuild
+mkdir ffbuild
+
+
+FFMPEG_REPO="https://github.com/ahalert/ffmpeg_rtmp_v6_h265.git"
+#FFMPEG_REPO="${FFMPEG_REPO:-https:github.com/FFmpeg/FFmpeg.git}"
+FFMPEG_REPO ="${FFMPEG_REPO_OVERRIDE: -$FFMPEG_REPO}" and "${FFMPEG_REPO}"
+GIT_BRANCH ="${GIT_BRANCH: -master}"
+GIT_BRANCH ="${GIT_BRANCH_OVERRIDE: -$GIT_BRANCH}"
+
+
+Build_Script ="$(mktemp)"
+trap "rm-f--'$BUILD_SCRIPT'"EXIT
+
+
+The Cat <EOF >$build_script
+    by-Xe
+    CD and FFBuild
+    rm-rf-ffpeng is the prefix
+
+
+    git clone--filter = blob: none--branch ='$GIT_BRANCH ''$FFMPEG_REPO 'ffpeng
+    The CD FFMPEG.
+    git update-index--chmod =+ x./ and Configure
+    chmod + x./ configured
+    touch ./addins/5.0.sh
+    echo '#!/bin/bash' >> ./addins/5.0.sh
+    echo 'GIT_BRANCH ="release/5.0"' >> ./addins/5.0.sh
+    #chmod-R + x./
+    #chmod-R + x./ ffbuild
+    #find. - name "*. sh"-type f-exec chmod + x {}
+    #find./ - name "*. sh"-type F| xargs chmod + x {}
+    #for shfile in $(find./ The name is "*. sh" type f.
+    #do 
+    #chmod + x ${shfile}
+    #done
+    ./configure --prefix=/ffbuild/prefix --pkg-config-flags="--static" \$FFBUILD_TARGET_FLAGS $FF_CONFIGURE \
+        --extra-cflags='$FF_CFLAGS' --extra-cxxflags='$FF_CXXFLAGS' \
+        --extra-ldflags='$FF_LDFLAGS' --extra-ldexeflags='$FF_LDEXEFLAGS' --extra-libs='$FF_LIBS' \
+        --extra-version="\$(date +%Y%m%d)"
+    make -j\$(nproc) V=1
+    make install install-doc
+EOF
     #chmod -R +x ./
     #chmod -R +x ./ffbuild
     #find ./ -name "*.sh" -type f -exec chmod +x {}
