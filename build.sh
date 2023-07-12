@@ -68,7 +68,7 @@ cat <<EOF >"$BUILD_SCRIPT"
     cd ffmpeg
     git update-index --chmod=+x ./configure
     chmod +x ./configure
-    touch ./addins/5.0.sh
+    #touch ./addins/5.0.sh
     #echo '#!/bin/bash' >>./addins/5.0.sh
     #echo 'GIT_BRANCH="release/5.0"' >>./addins/5.0.sh
     #chmod -R +x ./
