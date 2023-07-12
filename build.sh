@@ -75,6 +75,12 @@ cat <<EOF >"$BUILD_SCRIPT"
     git update-index --chmod=+x  ./ffbuild/version.sh
     chmod +x ./ffbuild/version.sh
     echo $PWD
+    git update-index --chmod=+x  ./ffbuild/libversion.sh
+    chmod +x ./ffbuild/libversion.sh
+    echo $PWD
+    git update-index --chmod=+x  ./ffbuild/pkgconfig_generate.sh
+    chmod +x ./ffbuild/pkgconfig_generate.sh
+    echo $PWD
     ./configure --prefix=/ffbuild/prefix --pkg-config-flags="--static" \$FFBUILD_TARGET_FLAGS $FF_CONFIGURE \
         --extra-cflags='$FF_CFLAGS' --extra-cxxflags='$FF_CXXFLAGS' \
         --extra-ldflags='$FF_LDFLAGS' --extra-ldexeflags='$FF_LDEXEFLAGS' --extra-libs='$FF_LIBS' \
