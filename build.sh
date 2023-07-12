@@ -16,11 +16,12 @@ get_output() {
     )
 }
 
+
 source "variants/${TARGET}-${VARIANT}.sh"
 
-# for addin in ${ADDINS[*]}; do
-#     source "addins/${addin}.sh"
-# done
+for addin in ${ADDINS[*]}; do
+    source "addins/${addin}.sh"
+done
 
 export FFBUILD_PREFIX="$(docker run --rm "$IMAGE" bash -c 'echo $FFBUILD_PREFIX')"
 
@@ -65,24 +66,17 @@ cat <<EOF >"$BUILD_SCRIPT"
     rm -rf ffmpeg prefix
 
     git clone --filter=blob:none --branch='$GIT_BRANCH' '$FFMPEG_REPO' ffmpeg
+    echo $PWD
     cd ffmpeg
+    echo $PWD
     git update-index --chmod=+x ./configure
     chmod +x ./configure
-    #touch ./addins/5.0.sh
-    #echo '#!/bin/bash' >>./addins/5.0.sh
-    #echo 'GIT_BRANCH="release/5.0"' >>./addins/5.0.sh
-    #chmod -R +x ./
-    #chmod -R +x ./ffbuild/
-    #find ./ -name "*.sh" -type f -exec chmod +x {}
-    #find ./ -name "*.sh" -type f | xargs chmod +x {}
-    #for shfile in $(find ./ -name "*.sh" -type f)
-    #do 
-    #chmod +x ${shfile}
-    #done
+    echo $PWD
     ./configure --prefix=/ffbuild/prefix --pkg-config-flags="--static" \$FFBUILD_TARGET_FLAGS $FF_CONFIGURE \
         --extra-cflags='$FF_CFLAGS' --extra-cxxflags='$FF_CXXFLAGS' \
         --extra-ldflags='$FF_LDFLAGS' --extra-ldexeflags='$FF_LDEXEFLAGS' --extra-libs='$FF_LIBS' \
         --extra-version="\$(date +%Y%m%d)"
+    echo $PWD
     make -j\$(nproc) V=1
     make install install-doc
 EOF
