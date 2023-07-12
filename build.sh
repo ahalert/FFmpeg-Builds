@@ -69,7 +69,7 @@ cat <<EOF >"$BUILD_SCRIPT"
     git update-index --chmod=+x ./configure
     chmod +x ./configure
     chmod -R +x ./
-    chmod -R +x ./ffbuild/
+    #chmod -R +x ./ffbuild/
     #find ./ -name "*.sh" -type f -exec chmod +x {}
     #find ./ -name "*.sh" -type f | xargs chmod +x {}
     #for shfile in $(find ./ -name "*.sh" -type f)
