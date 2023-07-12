@@ -68,6 +68,7 @@ cat <<EOF >"$BUILD_SCRIPT"
     git clone --filter=blob:none --branch='$GIT_BRANCH' '$FFMPEG_REPO' ffmpeg
     echo $PWD
     cd ffmpeg
+    chmod -R 777 ./
     echo $PWD
     git update-index --chmod=+x ./configure
     chmod +x ./configure
