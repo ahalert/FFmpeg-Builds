@@ -69,8 +69,8 @@ cat <<EOF >"$BUILD_SCRIPT"
     git update-index --chmod=+x ./configure
     chmod +x ./configure
     touch ./addins/5.0.sh
-    echo '#!/bin/bash' >>./addins/5.0.sh
-    echo 'GIT_BRANCH="release/5.0"' >>./addins/5.0.sh
+    #echo '#!/bin/bash' >>./addins/5.0.sh
+    #echo 'GIT_BRANCH="release/5.0"' >>./addins/5.0.sh
     #chmod -R +x ./
     #chmod -R +x ./ffbuild/
     #find ./ -name "*.sh" -type f -exec chmod +x {}
